@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Socrate</title>
+<meta name="theme-color" content="#2453E8">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body class="eleve">
+
+<section id="login" class="login hidden">
+  <div class="login-hero">
+    <div class="mascotte-xl" id="loginMascotte"></div>
+    <div class="bulle-dit">Je ne donne pas les réponses.<br>Je t'aide à les trouver.</div>
+  </div>
+  <h1 class="logo">Socrate</h1>
+  <p class="qui">Qui travaille aujourd'hui ?</p>
+  <div class="who">
+    <button data-who="olivia"><span class="pastille" style="--c:#FF5C6C">O</span>Olivia</button>
+    <button data-who="emilio"><span class="pastille" style="--c:#2453E8">E</span>Emilio</button>
+    <button data-who="raminta"><span class="pastille" style="--c:#2FB37B">R</span>Raminta</button>
+    <button data-who="corentin"><span class="pastille" style="--c:#7B5CF0">C</span>Corentin</button>
+  </div>
+  <input id="pwd" class="field" type="password" placeholder="Mot de passe" autocomplete="current-password">
+  <button id="loginBtn" class="btn btn-gros">C'est parti</button>
+  <div id="loginErr" class="error" role="alert"></div>
+  <p class="mention">Socrate est une intelligence artificielle. Il peut se tromper.</p>
+</section>
+
+<section id="app" class="app hidden">
+  <header class="top">
+    <button class="marque" id="homeBtn" title="Accueil">
+      <span class="mascotte-s" id="headMascotte"></span>
+      <span class="logo-s">Socrate</span>
+    </button>
+    <span class="badge-ia" title="Tu parles avec une intelligence artificielle, pas avec un humain.">IA</span>
+    <span class="spacer"></span>
+    <span class="serie" id="serie" title="Jours d'affilée"></span>
+    <button class="iconbtn voix-auto" id="voixAuto" aria-pressed="false" title="Lire les réponses à voix haute">
+      <svg viewBox="0 0 24 24" width="24" height="24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="ondes" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <button class="iconbtn" id="histBtn" title="Mes discussions et mon carnet" aria-label="Menu">
+      <svg viewBox="0 0 24 24" width="24" height="24"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>
+    </button>
+  </header>
+
+  <!-- Accueil : choix du mode et de la matière -->
+  <div class="accueil" id="accueil">
+    <div class="salut">
+      <div class="mascotte-m" id="accMascotte"></div>
+      <div class="bulle-dit" id="salutTexte"></div>
+    </div>
+
+    <div class="niveau-carte" id="niveauCarte"></div>
+    <button class="revision-jour" id="revisionJour">
+      <span class="rj-icone" aria-hidden="true">⚡</span>
+      <span><span class="rj-titre">Ma révision du jour</span>
+      <span class="rj-sous">5 questions sur ce que tu dois revoir, 5 minutes</span></span>
+    </button>
+
+    <h2 class="titre-section">Qu'est-ce qu'on fait ?</h2>
+    <div class="tuiles" id="modes"></div>
+
+    <h2 class="titre-section">Dans quelle matière ?</h2>
+    <div class="puces" id="matieres"></div>
+    <div class="puces hidden" id="niveaux"></div>
+
+    <button class="btn btn-gros" id="startBtn">Commencer</button>
+    <p class="quota" id="compteur"></p>
+  </div>
+
+  <!-- Discussion -->
+  <div class="chat hidden" id="chat"></div>
+
+  <div class="composer hidden" id="composer">
+    <div class="raccourcis" id="raccourcis"></div>
+    <div class="preview hidden" id="preview">
+      <img id="previewImg" alt="Photo jointe">
+      <button class="iconbtn" id="removePhoto">Retirer la photo</button>
+    </div>
+    <div class="composer-row">
+      <label class="photo-btn" title="Prendre en photo l'exercice" aria-label="Photo">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <input type="file" id="photo" accept="image/*" capture="environment" hidden>
+      </label>
+      <textarea id="input" rows="1" placeholder="Ta question ou ta réponse…"></textarea>
+      <button class="micro hidden" id="micro" title="Parler à Socrate" aria-label="Parler">
+        <svg viewBox="0 0 24 24" width="24" height="24"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="envoyer" id="sendBtn" aria-label="Envoyer">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M4 12l16-8-6 16-2.5-6.5z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="drawer hidden" id="drawer">
+  <div class="panel">
+    <div class="row" style="justify-content:space-between;margin-bottom:14px">
+      <strong class="panel-titre">Mon espace</strong>
+      <button class="iconbtn" id="closeDrawer">Fermer</button>
+    </div>
+    <button class="btn" id="newConv" style="width:100%;margin-bottom:14px">Nouvelle discussion</button>
+    <div class="niveau-carte" id="niveauCarte2"></div>
+    <details id="carnetBox" class="carnet-box" open>
+      <summary>Mon carnet de progrès</summary>
+      <div id="carnet" class="carnet"></div>
+    </details>
+    <h3 class="panel-sous">Mes discussions</h3>
+    <div id="convList"></div>
+    <p class="mention">Socrate est une IA : il peut se tromper, vérifie avec ton cours. Tes parents peuvent relire les discussions.</p>
+    <button class="btn ghost" id="logout" style="width:100%;margin-top:8px">Se déconnecter</button>
+    <a class="lien-parent" href="/parent.html" id="lienParent">Espace parent</a>
+  </div>
+</div>
+
+<div class="toast hidden" id="toast" role="status"></div>
+
+<script src="/vendor/marked.js"></script>
+<script src="/vendor/purify.js"></script>
+<script src="/vendor/katex/katex.min.js"></script>
+<script src="/vendor/katex/auto-render.min.js"></script>
+<script src="/common.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

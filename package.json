@@ -1,0 +1,16 @@
+{
+  "name": "socrate",
+  "version": "1.0.0",
+  "description": "Socrate, tuteur IA pour Olivia et Emilio",
+  "scripts": {
+    "installer": "node installer.mjs",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "wrangler": "^4.156.2"
+  },
+  "private": true
+}

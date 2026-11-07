@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Socrate – Parent</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<section id="login" class="login parent-login hidden">
+  <h1>Espace parent</h1>
+  <p>Historique, coûts et réglages de Socrate.</p>
+  <input id="pwd" class="field" type="password" placeholder="Mot de passe parent" autocomplete="current-password">
+  <button id="loginBtn" class="btn">Se connecter</button>
+  <div id="loginErr" class="error"></div>
+</section>
+
+<main id="main" class="parent hidden">
+  <div class="row" style="justify-content:space-between">
+    <h1>Socrate – espace parent</h1>
+    <div class="row">
+      <button class="btn" id="monCompte">Mon compte élève</button>
+      <button class="btn ghost" id="logout">Se déconnecter</button>
+    </div>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div id="viewConvs" class="split">
+    <div class="list" id="convList"></div>
+    <div class="thread" id="thread"><p class="small">Choisis une discussion.</p></div>
+  </div>
+
+  <div id="viewSettings" class="card settings hidden">
+    <h2>Modèle</h2>
+    <div class="row">
+      <select id="modelMode" class="field" style="max-width:420px">
+        <option value="auto">Automatique : Sonnet, puis Haiku au-delà du budget de la semaine</option>
+        <option value="sonnet">Toujours Sonnet</option>
+        <option value="haiku">Toujours Haiku</option>
+      </select>
+      <button class="btn" id="saveModel">Enregistrer</button>
+      <span class="ok" id="modelOk"></span>
+    </div>
+    <div id="childSettings"></div>
+  </div>
+</main>
+
+<script src="/vendor/marked.js"></script>
+<script src="/vendor/purify.js"></script>
+<script src="/vendor/katex/katex.min.js"></script>
+<script src="/vendor/katex/auto-render.min.js"></script>
+<script src="/common.js"></script>
+<script src="/parent.js"></script>
+</body>
+</html>

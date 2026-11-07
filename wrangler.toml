@@ -1,0 +1,19 @@
+name = "socrate"
+main = "src/worker.js"
+compatibility_date = "2026-10-01"
+
+[assets]
+directory = "./public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "socrate"
+database_id = "fc46eec9-3804-4838-a3c0-69e739249eb0"
+
+[triggers]
+crons = ["17 3 * * *"]
+
+[vars]
+LIMITE_JOUR = "40"
+BUDGET_SEMAINE_USD = "5"
+MAX_TOKENS = "1500"
