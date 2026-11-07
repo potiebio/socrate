@@ -347,3 +347,20 @@ header.top::after {
 .interrupteur { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-weight: 600; }
 .interrupteur input { width: 20px; height: 20px; accent-color: var(--egee); }
 .lien-parent { display: block; text-align: center; margin-top: 14px; color: var(--muted); font-size: .88rem; }
+
+/* classement */
+.podium { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.podium li {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface);
+  border: 2px solid var(--line); border-radius: var(--radius);
+}
+.podium li.moi { border-color: var(--encre); box-shadow: 3px 3px 0 var(--encre); }
+.podium .pastille { width: 36px; height: 36px; font-size: 1rem; flex: none; }
+.pod-place { width: 28px; text-align: center; font-size: 1.3rem; font-weight: 800; flex: none; }
+.pod-nom { flex: 1; font-weight: 800; min-width: 0; }
+.pod-detail { display: block; font-weight: 500; font-size: .8rem; color: var(--muted); }
+.pod-barre { display: block; height: 6px; border-radius: 99px; background: var(--marbre); margin-top: 5px; overflow: hidden; }
+.pod-barre > span { display: block; height: 100%; border-radius: 99px; }
+.pod-pts { font-weight: 800; font-size: 1.35rem; text-align: right; line-height: 1; }
+.pod-pts small { display: block; font-size: .7rem; font-weight: 600; color: var(--muted); }
+.pod-regle { font-size: .8rem; color: var(--muted); margin: 8px 2px 0; }

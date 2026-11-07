@@ -119,10 +119,13 @@ const NIVEAUX_XP = [
 async function stats(env, userId) {
   const r = await env.DB.prepare(
     `SELECT COUNT(*) FILTER (WHERE role='user') AS q,
-            COUNT(*) FILTER (WHERE role='assistant' AND content LIKE '%🎉%') AS reussites
+            COUNT(*) FILTER (WHERE role='assistant' AND content LIKE '%🎉%') AS reussites,
+            COUNT(*) FILTER (WHERE role='user' AND week_paris = ?) AS q_sem,
+            COUNT(*) FILTER (WHERE role='assistant' AND content LIKE '%🎉%' AND week_paris = ?) AS reussites_sem
        FROM messages WHERE user_id = ?`
-  ).bind(userId).first();
+  ).bind(lundiParis(), lundiParis(), userId).first();
   const xp = r.q * 10 + r.reussites * 25;
+  const xp_semaine = r.q_sem * 10 + r.reussites_sem * 25;
   let i = 0;
   while (i + 1 < NIVEAUX_XP.length && xp >= NIVEAUX_XP[i + 1][0]) i++;
   const [bas, nom] = NIVEAUX_XP[i];
@@ -142,7 +145,7 @@ async function stats(env, userId) {
       attendu = new Date(attendu.getTime() - 86400000);
     }
   }
-  return { xp, niveau: nom, rang: i + 1, bas, haut, reussites: r.reussites, serie, aujourdhui_fait: jours[0] === auj };
+  return { xp, xp_semaine, niveau: nom, rang: i + 1, bas, haut, reussites: r.reussites, serie, aujourdhui_fait: jours[0] === auj };
 }
 
 async function correctionLibre(env, userId) {
@@ -302,6 +305,18 @@ async function api(req, env, url, ctx) {
       limite: Number(env.LIMITE_JOUR || 40),
       modes: MODES, matieres: MATIERES, niveaux: NIVEAUX[s.id] || null,
     });
+  }
+
+  // Classement familial : visible par tous (prénoms, points, niveau, série — rien d'autre)
+  if (p === "/api/classement" && method === "GET") {
+    const liste = [];
+    for (const id of ENFANTS) {
+      const u = await env.DB.prepare("SELECT display FROM users WHERE id = ?").bind(id).first();
+      const st = await stats(env, id);
+      liste.push({ id, display: u ? u.display : id, xp: st.xp, xp_semaine: st.xp_semaine, niveau: st.niveau, rang: st.rang, serie: st.serie });
+    }
+    liste.sort((a, b) => b.xp_semaine - a.xp_semaine || b.xp - a.xp);
+    return json({ semaine: lundiParis(), liste });
   }
 
   if (p === "/api/carnet" && method === "GET") {

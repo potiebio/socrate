@@ -119,6 +119,27 @@
       <div class="niv-barre"><div style="width:${pct}%"></div></div>
       <div class="niv-reste">${reste} · ${st.reussites} réussite${st.reussites > 1 ? "s" : ""} 🎉</div>`;
   }
+  const COULEURS = { olivia: "#FF5C6C", emilio: "#2453E8", raminta: "#2FB37B", corentin: "#7B5CF0" };
+  async function majClassement() {
+    try {
+      const c = await T.api("/api/classement");
+      const medailles = ["🥇", "🥈", "🥉"];
+      const max = Math.max(1, ...c.liste.map((x) => x.xp_semaine));
+      $("classement").innerHTML = `<h2 class="titre-section">Le défi de la semaine</h2>
+        <ol class="podium">${c.liste.map((x, i) => `
+          <li class="${x.id === me.id ? "moi" : ""}">
+            <span class="pod-place">${x.xp_semaine ? medailles[i] || i + 1 : i + 1}</span>
+            <span class="pastille" style="--c:${COULEURS[x.id] || "#5D6488"}">${T.esc(x.display[0])}</span>
+            <span class="pod-nom">${T.esc(x.display)}${x.id === me.id ? " (toi)" : ""}
+              <span class="pod-detail">${T.esc(x.niveau)} · ${x.xp} pts au total${x.serie ? " · 🔥" + x.serie : ""}</span>
+              <span class="pod-barre"><span style="width:${Math.round((x.xp_semaine / max) * 100)}%;background:${COULEURS[x.id] || "#5D6488"}"></span></span>
+            </span>
+            <span class="pod-pts">${x.xp_semaine}<small>pts</small></span>
+          </li>`).join("")}</ol>
+        <p class="pod-regle">Remise à zéro chaque lundi · 10 points par question, 25 par réussite 🎉</p>`;
+    } catch {}
+  }
+
   function majStats(st) {
     if (!st) return;
     const avant = me.stats;
@@ -137,6 +158,7 @@
 
   function accueil() {
     convId = null;
+    majClassement();
     $("accueil").classList.remove("hidden");
     $("chat").classList.add("hidden");
     $("composer").classList.add("hidden");
